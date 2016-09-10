@@ -1,0 +1,6 @@
+set scalacOptions in ThisBuild += "-feature"
+compile
+clean
+compile
+run
+test
