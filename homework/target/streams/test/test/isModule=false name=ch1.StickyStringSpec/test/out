@@ -1,6 +1,0 @@
-[0m[[0minfo[0m] [0m[32mStickyStringSpec:[0m[0m
-[0m[[0minfo[0m] [0m[32mstore last string message[0m[0m
-[0m[[0minfo[0m] [0m[32m  send one string[0m[0m
-[0m[[0minfo[0m] [0m[32m  - should store the string[0m[0m
-[0m[[0minfo[0m] [0m[32m  send two strings[0m[0m
-[0m[[0minfo[0m] [0m[32m  - should store the last string[0m[0m
