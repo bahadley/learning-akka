@@ -1,5 +1,5 @@
-LEARNINGAKKAJG
+Code Samples and Exercises from "Learning Akka" by Jason Goodwin
 
 ***
 
-Code Samples and Exercises from "Learning Akka" by Jason Goodwin
+LEARNINGAKKAJG
