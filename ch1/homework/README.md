@@ -11,3 +11,7 @@ From the text:
 * Write a unit test to confirm the actor behaves correctly if it is sent two messages.
 
 ***
+
+How to run:
+
+`$ sbt test`
