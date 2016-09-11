@@ -1,4 +1,4 @@
-package ch1
+package stickyString 
 
 import akka.actor.{Actor, ActorLogging}
 
