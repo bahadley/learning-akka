@@ -1,6 +1,6 @@
 This project implements the homework from chapter 1.
 
-From the text:
+Instructions from the text:
 
 ***
 
