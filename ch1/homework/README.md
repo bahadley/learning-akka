@@ -1,7 +1,7 @@
-This project implements the homework from chapter 1.
+Implements the chapter 1 homework.
 
 ***
-Instructions from the text:
+Instructions from text:
 
 * Create an actor.  Have the actor store the last string that it was sent.
 

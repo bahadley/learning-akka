@@ -1,4 +1,6 @@
-This project implements the initial Futures example from chapter 1.
+Implements the initial Futures example in chapter 1.
+
+***
 
 How to run:
 
