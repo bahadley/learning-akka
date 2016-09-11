@@ -1,0 +1,4 @@
+[0m[[0minfo[0m] [0m[32mAskExamplesTest:[0m[0m
+[0m[[0minfo[0m] [0m[32mPong actor[0m[0m
+[0m[[0minfo[0m] [0m[32m- should respond with Pong[0m[0m
+[0m[[0minfo[0m] [0m[32m- should fail on unexpected message[0m[0m
