@@ -1,4 +1,4 @@
-Implements the chapter 1 AkkademyDB example.
+Implements the AkkademyDB example.
 
 ***
 
