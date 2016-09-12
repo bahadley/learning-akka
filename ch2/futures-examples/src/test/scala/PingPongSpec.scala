@@ -127,7 +127,7 @@ class FutureExamples extends FunSpecLike with Matchers {
       assert(additionResult == 9)
     }
 
-    it("should handle a list of futures"){
+    it("should handle a list of futures (uses map(), Future.sequence(), and recover(), p. 58)"){
       val listOfFutures: List[Future[String]] = 
         List("Ping", "Ping", "failure").map(x => askPong(x))
 
