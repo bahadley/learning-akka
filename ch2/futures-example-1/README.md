@@ -1,4 +1,4 @@
-Implements the initial Futures example in chapter 1.
+Implements the initial Futures examples in chapter 1.
 
 ***
 
