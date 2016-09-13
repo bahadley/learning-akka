@@ -1,4 +1,4 @@
-Implements the chapter 1 general learning exercise.
+Implements the general learning exercise in chapter 2 .
 
 ***
 Instructions from text:

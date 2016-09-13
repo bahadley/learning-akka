@@ -13,29 +13,25 @@ class ReverseStringServiceSpec extends FunSpecLike with Matchers {
     import scala.concurrent.ExecutionContext.Implicits.global
 
     it("should reverse a String") {
-      val s = "blah"
-      val future = ReverseStringService.reverse(s)
+      val future = ReverseStringService.reverse("blah")
       val rs = Await.result(future, 1 second) 
-      rs should equal(s.reverse)
+      rs should equal("halb")
     }
 
     it("should fail with a non-String type") {
-      val future = ReverseStringService.reverse(55)
+      val future = ReverseStringService.reverse(1234)
       intercept[Exception] {
         Await.result(future, 1 second)
       }
     } 
 
-    it("should reverse all Strings in a List") {
-      val ls = List("foo", "bar", "baz")
-
+    it("should reverse all Strings in a List and gracefully handle non-String types") {
       val listOfFutures: List[Future[String]] = 
-        ls.map(x => ReverseStringService.reverse(x))
+        List("foo", "bar", "-u2*", 123).map(x => ReverseStringService.reverse(x))
       val futureOfList: Future[List[String]] = 
         Future.sequence(listOfFutures.map(f => f.recover{case _: Exception => ""}))
-
-      val result = Await.result(futureOfList, 1 second)
-      result should equal(ls.map(x => x.reverse))
+      val rs = Await.result(futureOfList, 1 second)
+      rs should equal(List("oof", "rab", "*2u-", ""))
     }
   }
 }
