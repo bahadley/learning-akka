@@ -1,6 +1,6 @@
 Code Samples and Exercises from [Learning Akka](https://www.packtpub.com/application-development/learning-akka) by Jason Goodwin
 
-[https://github.com/jasongoodwin/learning-akka](https://github.com/jasongoodwin/learning-akka)
+Book source code:  [https://github.com/jasongoodwin/learning-akka](https://github.com/jasongoodwin/learning-akka)
 
 ***
 
