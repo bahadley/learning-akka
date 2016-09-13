@@ -1,11 +1,13 @@
-Code Samples and Exercises from **Learning Akka** by Jason Goodwin
+Code Samples and Exercises from [Learning Akka](https://www.packtpub.com/application-development/learning-akka) by Jason Goodwin
+
+[https://github.com/jasongoodwin/learning-akka](https://github.com/jasongoodwin/learning-akka)
 
 ***
 
 Prerequisites for running the code in this repository:
 
 * Java 8+
-* sbt 0.13+ [(http://www.scala-sbt.org/)](http://www.scala-sbt.org/)
+* sbt 0.13+
 
 ***
 
