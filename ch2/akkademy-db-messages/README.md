@@ -12,6 +12,6 @@ This should produce the directory:
 
 `{user.home}/.ivy2/local/com.akkademy`
 
-Also notice `akkademy-db_2.11.jar` in:
+Also notice `akkademy-db-messages_2.11.jar` in:
 
-`{user.home}/.ivy2/local/com.akkademy/akkademy-db_2.11/0.0.1-SNAPSHOT/jars/`
+`{user.home}/.ivy2/local/com.akkademy/akkademy-db-messages_2.11/0.0.1-SNAPSHOT/jars/`
