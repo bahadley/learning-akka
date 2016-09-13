@@ -10,7 +10,6 @@ import scala.language.postfixOps
 object ReverseStringService {
 
   private class ReverseString extends Actor {
-
     def receive = {
       case s: String => sender ! s.reverse
       case _ => sender ! Status.Failure(new Exception("unexpected message"))
