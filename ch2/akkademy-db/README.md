@@ -10,7 +10,7 @@ docs.
 Various debug switches have been enabled in the `application.conf` file.
 
 Also note the use of ActorLogging mixin and LoggingReceive in `AkkademyDb.scala`. The
-latter is necessary for the logging of received messages.
+latter is necessary for the logging of received messages with `DEBUG` logging.
 
 ***
 
@@ -18,6 +18,8 @@ Test with:
 
 `$ sbt test`
 
-Launch to allow client interaction:
+Launch for client interaction:
 
 `$ sbt run` 
+
+Shutdown with ctrl-C
