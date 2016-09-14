@@ -12,7 +12,7 @@ class AkkademyDb extends Actor with ActorLogging {
     case SetRequest(key, value) =>
       log.info("received SetRequest - key: {} value: {}", key, value)
       map.put(key, value)
-      sender ! Status.Success
+      //sender ! Status.Success
     case GetRequest(key) =>
       log.info("received GetRequest - key: {}", key)
       val response: Option[Object] = map.get(key)
