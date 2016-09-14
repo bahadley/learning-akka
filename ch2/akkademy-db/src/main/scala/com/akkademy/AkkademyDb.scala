@@ -4,6 +4,7 @@ import akka.actor.{Actor, ActorLogging, ActorSystem, Props, Status}
 import akka.event.LoggingReceive
 import com.akkademy.messages._
 import scala.collection.mutable.HashMap
+import org.slf4j.LoggerFactory
 
 class AkkademyDb extends Actor with ActorLogging {
 
@@ -28,5 +29,11 @@ class AkkademyDb extends Actor with ActorLogging {
 }
 
 object Main extends App {
-  ActorSystem("akkademy").actorOf(Props[AkkademyDb], name = "akkademy-db")
+
+  val log = LoggerFactory.getLogger(Main.getClass)
+
+  val system = ActorSystem("akkademy")
+  val actor = system.actorOf(Props[AkkademyDb], name = "akkademy-db")
+
+  log.info("Started actor with path: {}", actor.path)
 }
