@@ -14,10 +14,10 @@ class AkkademyClientSpec extends FunSpecLike with Matchers {
   describe("akkademyDbClient") {
     it("should set a value") {
         val f1 = client.set("123", 456)
-        val rs1 = Await.result(f1, 20 seconds)
+        val rs1 = Await.result(f1, 2 seconds)
 
         val f2 = client.get("123")
-        val rs2 = Await.result(f2, 20 seconds)
+        val rs2 = Await.result(f2, 2 seconds)
         rs2 should equal(456)
     }
   }

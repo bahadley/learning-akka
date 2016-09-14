@@ -11,7 +11,7 @@ import scala.language.postfixOps
 
 class AkkademyClient(remoteAddress: String) {
 
-  private implicit val timeout = Timeout(20 seconds)
+  private implicit val timeout = Timeout(2 seconds)
 
   private val path = s"akka.tcp://akkademy@$remoteAddress/user/akkademy-db"
   private val akkademydb = ActorSystem("client").actorSelection(path)
