@@ -6,20 +6,23 @@ import com.akkademy.messages._
 import scala.collection.mutable.HashMap
 
 class AkkademyDb extends Actor with ActorLogging {
-  val map = new HashMap[String, Object]
+
+  val map = new HashMap[String, Any]
 
   def receive = LoggingReceive {
-    case SetRequest(key, value) =>
-      log.info("received SetRequest - key: {} value: {}", key, value)
-      map.put(key, value)
+
+    case m: SetRequest =>
+      log.info("received SetRequest - key: {} value: {}", m.key, m.value)
+      map.put(m.key, m.value)
       sender ! Status.Success
-    case GetRequest(key) =>
-      log.info("received GetRequest - key: {}", key)
-      val response: Option[Object] = map.get(key)
-      response match{
-        case Some(x) => sender ! x
-        case None => sender ! Status.Failure(new KeyNotFoundException(key))
+
+    case m: GetRequest =>
+      log.info("received GetRequest - key: {}", m.key)
+      map.get(m.key) match {
+        case Some(value) => sender ! value 
+        case None => sender ! Status.Failure(new KeyNotFoundException(m.key))
       }
+
     case _ => Status.Failure(new ClassNotFoundException)
   }
 }
