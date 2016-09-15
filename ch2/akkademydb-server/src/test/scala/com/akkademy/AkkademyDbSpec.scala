@@ -9,7 +9,7 @@ import org.scalatest.{FunSpecLike, Matchers}
 class AkkademyDbSpec extends FunSpecLike with Matchers {
   implicit val system = ActorSystem()
 
-  describe("akkademy-db-server") {
+  describe("akkademydb-server") {
     describe("given a Set message"){
       it("should place key/value into map"){
         val actor = TestActorRef(new AkkademyDb)

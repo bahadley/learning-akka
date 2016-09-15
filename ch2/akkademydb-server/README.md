@@ -1,4 +1,4 @@
-Implements the AkkademyDb service in chapter 2.
+Implements the AkkademyDB server in chapter 2.
 
 ***
 

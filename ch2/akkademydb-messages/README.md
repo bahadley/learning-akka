@@ -1,4 +1,4 @@
-Implements the messages required for the akkademy service in chapter 2.
+Implements the messages required for the AkkademyDB app in chapter 2.
 
 ***
 
@@ -12,6 +12,6 @@ This should produce the directory:
 
 `{user.home}/.ivy2/local/com.akkademy`
 
-Also notice `akkademy-db-messages_2.11.jar` in:
+Also notice `akkademydb-messages_2.11.jar` in:
 
-`{user.home}/.ivy2/local/com.akkademy/akkademy-db-messages_2.11/0.0.1-SNAPSHOT/jars/`
+`{user.home}/.ivy2/local/com.akkademy/akkademydb-messages_2.11/0.0.1-SNAPSHOT/jars/`
