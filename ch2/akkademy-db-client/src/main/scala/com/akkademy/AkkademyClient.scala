@@ -13,23 +13,27 @@ class AkkademyClient(remoteAddress: String) {
 
   private implicit val timeout = Timeout(2 seconds)
 
-  private val path = s"akka.tcp://akkademy@$remoteAddress/user/akkademy-db"
-  private val akkademydb = ActorSystem("client").actorSelection(path)
-
-  def set(key: String, value: Any): Future[Any] = {
-    akkademydb ? SetRequest(key, value)
-  }
+  private val path = s"akka.tcp://akkademy-server@$remoteAddress/user/akkademyDb"
+  private val akkademyDb = ActorSystem("akkademy-client").actorSelection(path)
 
   def get(key: String): Future[Any] = {
-    akkademydb ? GetRequest(key)
+    akkademyDb ? Get(key)
+  }
+
+  def set(key: String, value: Any): Future[Any] = {
+    akkademyDb ? Set(key, value)
+  }
+
+  def setIfNotExists(key: String, value: Any): Future[Any] = {
+    akkademyDb ? SetIfNotExists(key, value)
   }
 
   def delete(key: String): Future[Any] = {
-    akkademydb ? DeleteRequest(key)
+    akkademyDb ? Delete(key)
   }
 
   // Use to test sending unexpected requests 
   def sendUnexpected: Future[Any] = {
-    akkademydb ? "junk"
+    akkademyDb ? "junk"
   }
 }

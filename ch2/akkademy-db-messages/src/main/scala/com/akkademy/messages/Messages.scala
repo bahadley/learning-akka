@@ -1,9 +1,9 @@
 package com.akkademy.messages
 
-case class SetRequest(key: String, value: Any)
-case class SetIfNotExistsRequest(key: String, value: Any)
-case class GetRequest(key: String)
-case class DeleteRequest(key: String)
+case class Set(key: String, value: Any)
+case class SetIfNotExists(key: String, value: Any)
+case class Get(key: String)
+case class Delete(key: String)
 
-case class KeyNotFoundException(key: String) extends Exception
-case class UnexpectedRequestException() extends Exception
+case class KeyNotFound(key: String) extends Exception
+case class UnexpectedMessage() extends Exception

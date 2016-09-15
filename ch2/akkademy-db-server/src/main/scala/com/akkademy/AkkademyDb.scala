@@ -12,26 +12,29 @@ class AkkademyDb extends Actor with ActorLogging {
 
   def receive = LoggingReceive {
 
-    case r: SetRequest =>
-      log.info("Received SetRequest; key: [{}]; value: [{}]", r.key, r.value)
-      map.put(r.key, r.value)
-      sender ! Status.Success
-
-    case r: GetRequest =>
-      log.info("Received GetRequest; key: [{}]", r.key)
-      map.get(r.key) match {
+    case msg: Get =>
+      log.info("Received Get; key: [{}]", msg.key)
+      map.get(msg.key) match {
         case Some(value) => sender ! value 
-        case None        => sender ! Status.Failure(new KeyNotFoundException(r.key))
+        case None        => sender ! Status.Failure(KeyNotFound(msg.key))
       }
 
-    case r: DeleteRequest =>
-      log.info("Received DeleteRequest; key: [{}]", r.key)
-      map.remove(r.key) match {
+    case msg: Set =>
+      log.info("Received Set; key: [{}]; value: [{}]", msg.key, msg.value)
+      sender ! map.put(msg.key, msg.value)
+
+    case msg: SetIfNotExists =>
+      log.info("Received SetIfNotExists; key: [{}]; value: [{}]", msg.key, msg.value)
+      sender ! map.getOrElseUpdate(msg.key, msg.value)
+
+    case msg: Delete =>
+      log.info("Received Delete; key: [{}]", msg.key)
+      map.remove(msg.key) match {
         case Some(value) => sender ! value 
-        case None        => sender ! Status.Failure(new KeyNotFoundException(r.key))
+        case None        => sender ! Status.Failure(KeyNotFound(msg.key))
       }
 
-    case _ => sender ! Status.Failure(UnexpectedRequestException())
+    case _ => sender ! Status.Failure(UnexpectedMessage())
   }
 }
 
@@ -39,8 +42,8 @@ object Main extends App {
 
   val log = LoggerFactory.getLogger(Main.getClass)
 
-  val system = ActorSystem("akkademy")
-  val actor = system.actorOf(Props[AkkademyDb], name = "akkademy-db")
+  val system = ActorSystem("akkademy-server")
+  val actor = system.actorOf(Props[AkkademyDb], name = "akkademyDb")
 
   log.info("Actor started; has path: [{}]", actor.path)
 }
