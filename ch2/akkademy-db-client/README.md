@@ -32,7 +32,7 @@ The hard-coded address should match the server's `remote.netty` settings.
 Akka automatically configures the client to use a different subnet than the one used by the server when 
 both run on the same host.  This avoids conflicts that would occur if they both listened on the same port 
 within the same subnet.  Consider adding an explicit remote setting to the client's `application.conf` 
-file if messages are not be delivered.  For example:    
+file if messages are not being delivered.  For example:    
 
 ```
   ...
