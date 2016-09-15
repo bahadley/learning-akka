@@ -12,19 +12,26 @@ class AkkademyDb extends Actor with ActorLogging {
 
   def receive = LoggingReceive {
 
-    case m: SetRequest =>
-      log.info("received SetRequest - key: {} value: {}", m.key, m.value)
-      map.put(m.key, m.value)
+    case r: SetRequest =>
+      log.info("Received SetRequest; key: [{}]; value: [{}]", r.key, r.value)
+      map.put(r.key, r.value)
       sender ! Status.Success
 
-    case m: GetRequest =>
-      log.info("received GetRequest - key: {}", m.key)
-      map.get(m.key) match {
+    case r: GetRequest =>
+      log.info("Received GetRequest; key: [{}]", r.key)
+      map.get(r.key) match {
         case Some(value) => sender ! value 
-        case None => sender ! Status.Failure(new KeyNotFoundException(m.key))
+        case None        => sender ! Status.Failure(new KeyNotFoundException(r.key))
       }
 
-    case _ => Status.Failure(new ClassNotFoundException)
+    case r: DeleteRequest =>
+      log.info("Received DeleteRequest; key: [{}]", r.key)
+      map.remove(r.key) match {
+        case Some(value) => sender ! value 
+        case None        => sender ! Status.Failure(new KeyNotFoundException(r.key))
+      }
+
+    case _ => sender ! Status.Failure(UnexpectedRequestException())
   }
 }
 
@@ -35,5 +42,5 @@ object Main extends App {
   val system = ActorSystem("akkademy")
   val actor = system.actorOf(Props[AkkademyDb], name = "akkademy-db")
 
-  log.info("Started actor with path: {}", actor.path)
+  log.info("Actor started; has path: [{}]", actor.path)
 }

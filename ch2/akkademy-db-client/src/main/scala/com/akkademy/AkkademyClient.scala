@@ -23,4 +23,13 @@ class AkkademyClient(remoteAddress: String) {
   def get(key: String): Future[Any] = {
     akkademydb ? GetRequest(key)
   }
+
+  def delete(key: String): Future[Any] = {
+    akkademydb ? DeleteRequest(key)
+  }
+
+  // Use to test sending unexpected requests 
+  def sendUnexpected: Future[Any] = {
+    akkademydb ? "junk"
+  }
 }
