@@ -7,13 +7,13 @@ import scala.language.postfixOps
 import com.akkademy.messages._
 
 
-class AkkademyClientSpec extends FunSpecLike with Matchers {
+class AkkademyDbClientSpec extends FunSpecLike with Matchers {
 
   private val serverAddr = "127.0.0.1:2552" 
 
-  describe("akkademy-db-client") {
+  describe("akkademydb-client") {
 
-    val client = new AkkademyClient(serverAddr)
+    val client = new AkkademyDbClient(serverAddr)
 
     val timeout = 2 seconds
 
@@ -94,7 +94,7 @@ class AkkademyClientSpec extends FunSpecLike with Matchers {
     }
 
     it("should fail when sent an unexpected message") {
-      val f1 = client.sendUnexpected 
+      val f1 = client.sendUnexpected("junk") 
       intercept[UnexpectedMessage] {
         Await.result(f1, timeout)
       }

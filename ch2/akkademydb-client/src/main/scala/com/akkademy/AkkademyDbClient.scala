@@ -9,12 +9,12 @@ import scala.concurrent.duration._
 import scala.language.postfixOps
 
 
-class AkkademyClient(remoteAddress: String) {
+class AkkademyDbClient(remoteAddress: String) {
 
   private implicit val timeout = Timeout(2 seconds)
 
-  private val path = s"akka.tcp://akkademy-server@$remoteAddress/user/akkademyDb"
-  private val akkademyDb = ActorSystem("akkademy-client").actorSelection(path)
+  private val path = s"akka.tcp://akkademydb-server@$remoteAddress/user/akkademydb"
+  private val akkademyDb = ActorSystem("akkademydb-client").actorSelection(path)
 
   def get(key: String): Future[Any] = {
     akkademyDb ? Get(key)
@@ -32,8 +32,8 @@ class AkkademyClient(remoteAddress: String) {
     akkademyDb ? Delete(key)
   }
 
-  // Use to test sending unexpected requests 
-  def sendUnexpected: Future[Any] = {
-    akkademyDb ? "junk"
+  // Used to test sending unexpected requests 
+  def sendUnexpected(msg: String): Future[Any] = {
+    akkademyDb ? msg 
   }
 }
