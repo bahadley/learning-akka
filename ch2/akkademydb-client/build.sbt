@@ -1,4 +1,4 @@
-name := "akkademy-db-client"
+name := "akkademydb-client"
 
 organization := "com.akkademy"
 
@@ -10,6 +10,6 @@ lazy val akkaVersion = "2.4.10"
 
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-remote" % akkaVersion,
-  "com.akkademy" %% "akkademy-db-messages" % "0.0.1-SNAPSHOT",
+  "com.akkademy" %% "akkademydb-messages" % "0.0.1-SNAPSHOT",
   "org.scalatest" %% "scalatest" % "3.0.0" % "test"
 )

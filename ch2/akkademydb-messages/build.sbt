@@ -1,4 +1,4 @@
-name := "akkademy-db-messages"
+name := "akkademydb-messages"
 
 organization := "com.akkademy"
 
