@@ -11,13 +11,12 @@ class AkkademyDbClientSpec extends FunSpecLike with Matchers {
 
   private val serverAddr = "127.0.0.1:2552" 
 
-  describe("akkademydb-client") {
+  private val client = new AkkademyDbClient(serverAddr)
 
-    val client = new AkkademyDbClient(serverAddr)
+  private val timeout = 2 seconds
 
-    val timeout = 2 seconds
-
-    it("should set a value and then get the same value") {
+  describe("set() and get()") {
+    it("should set a value and then get the same value back") {
       val k = "key-1"
       val v = 123 
 
@@ -29,8 +28,26 @@ class AkkademyDbClientSpec extends FunSpecLike with Matchers {
       val rs2 = Await.result(f2, timeout)
       rs2 should equal(v)
     }
+  }
 
-    it("should set a value and then delete it") {
+  describe("set()") {
+    it("should return the old value if an existing key is updated") {
+      val k = "key-1"
+      val v1 = Some(123)
+      val v2 = 456
+
+      val f1 = client.set(k, v2)
+      val rs1 = Await.result(f1, timeout)
+      rs1 should equal(v1)
+
+      val f2 = client.get(k)
+      val rs2 = Await.result(f2, timeout)
+      rs2 should equal(v2)
+    }
+  }
+
+  describe("set(), delete(), and get()") {
+    it("should set a value, delete it, and then get a KeyNotFound") {
       val k = "key-2"
       val v = "blah"
 
@@ -47,8 +64,10 @@ class AkkademyDbClientSpec extends FunSpecLike with Matchers {
         Await.result(f3, timeout)
       }
     }
+  }
 
-    it("should set a value that does not already exist (using SetIfNotExists)") {
+  describe("setIfNotExists()") {
+    it("should set a value that does not already exist") {
       val k = "key-3"
       val v = 123.45 
 
@@ -61,7 +80,7 @@ class AkkademyDbClientSpec extends FunSpecLike with Matchers {
       rs2 should equal(v)
     }
 
-    it("should not set a value that already exists (using SetIfNotExists)") {
+    it("should not set a value that already exists") {
       val k = "key-4"
       val v1 = true 
       val v2 = false 
@@ -78,22 +97,28 @@ class AkkademyDbClientSpec extends FunSpecLike with Matchers {
       val rs3 = Await.result(f3, timeout)
       rs3 should equal(v1)
     }
+  }
 
-    it("should fail when key is not found for a get") {
+  describe("get()") {
+    it("should fail when key is not found") {
       val f1 = client.get("r6*me@")
       intercept[KeyNotFound] {
         Await.result(f1, timeout)
       } 
     }
+  }
 
-    it("should fail when key is not found for a delete") {
+  describe("delete()") {
+    it("should fail when key is not found") {
       val f1 = client.delete("-gaJ(n")
       intercept[KeyNotFound] {
         Await.result(f1, timeout)
       } 
     }
+  }
 
-    it("should fail when sent an unexpected message") {
+  describe("sendUnexpected()") {
+    it("should fail when sent a message") {
       val f1 = client.sendUnexpected("junk") 
       intercept[UnexpectedMessage] {
         Await.result(f1, timeout)
