@@ -24,5 +24,5 @@ The hard-coded address should match the server's `remote.netty` settings.
 
 Increase the Future timeout values used in the `AkkademyClient` and `AkkademyClientSpec` classes if the
 client encounters **timeout errors**.  This may occur in memory constrained environments such as VMs.  It was
-observed that both ActorSystems and associated JVMs required over 900MB of RAM.  Latency will increase
+observed that sbt, both ActorSystems, and associated JVMs required over 900MB of RAM.  Latency will increase
 dramatically if swapping to disk occurs.  
