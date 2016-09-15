@@ -10,9 +10,11 @@ Test with:
 
 Notes:
 
-The client specifies a `remote.netty.tcp.port` in this project's `application.conf` file.  This will be
-used by the client's own ActorSystem.  A port different than the server's will be required if the client 
-is running on the same host as the server.
+The code and configuration assume that the client and server will run on the same host.  
+
+The client will need its own remote settings if different hosts are used.  See the troubleshooting
+section for how this can be done.  Appropriate IP addresses will need to be configured in both
+`application.conf` files and the hard-coded address in `AkkademyClientSpec.scala` updated. 
 
 ***
 
