@@ -15,55 +15,55 @@ class AkkademyDbClientSpec extends FunSpecLike with Matchers {
 
   private val timeout = 2 seconds
 
-  describe("set() and get()") {
-    it("should set a value and then get the same value back") {
-      val k = "key-1"
-      val v = 123 
+  private val keys = Vector(
+    "key-0", "key-1", "key-2", 
+    "key-3", "key-4", "r6*me@", 
+    "-gaJ(n", "junk")
 
-      val f1 = client.set(k, v)
+  private val values = Vector(
+    123, 456, 789, 
+    "blah", 123.45, true, 
+    false)
+
+  describe("set() and get()") {
+    it("should add key/value and then get the same value back") {
+      val f1 = client.set(keys(0), values(0))
       val rs1 = Await.result(f1, timeout)
       rs1 should equal(None)
 
-      val f2 = client.get(k)
+      val f2 = client.get(keys(0))
       val rs2 = Await.result(f2, timeout)
-      rs2 should equal(v)
+      rs2 should equal(values(0))
     }
   }
 
-  describe("set()") {
-    it("should return the old value if an existing key is updated") {
-      val k = "key-2"
-      val v1 = 456
-      val v2 = 789 
-
-      val f1 = client.set(k, v1)
+  describe("set() and get()") {
+    it("should return the old value if updating an existing key and get the new value") {
+      val f1 = client.set(keys(1), values(1))
       val rs1 = Await.result(f1, timeout)
       rs1 should equal(None)
 
-      val f2 = client.set(k, v2)
+      val f2 = client.set(keys(1), values(2))
       val rs2 = Await.result(f2, timeout)
-      rs2 should equal(Some(v1))
+      rs2 should equal(Some(values(1)))
 
-      val f3 = client.get(k)
+      val f3 = client.get(keys(1))
       val rs3 = Await.result(f3, timeout)
-      rs3 should equal(v2)
+      rs3 should equal(values(2))
     }
   }
 
   describe("set(), delete(), and get()") {
-    it("should set a value, delete it, and then get a KeyNotFound") {
-      val k = "key-3"
-      val v = "blah"
-
-      val f1 = client.set(k, v)
+    it("should add key/value, delete it, and then get a KeyNotFound") {
+      val f1 = client.set(keys(2), values(3))
       val rs1 = Await.result(f1, timeout)
       rs1 should equal(None)
 
-      val f2 = client.delete(k)
+      val f2 = client.delete(keys(2))
       val rs2 = Await.result(f2, timeout)
-      rs2 should equal(v)
+      rs2 should equal(values(3))
 
-      val f3 = client.get(k)
+      val f3 = client.get(keys(2))
       intercept[KeyNotFound] {
         Await.result(f3, timeout)
       }
@@ -71,41 +71,34 @@ class AkkademyDbClientSpec extends FunSpecLike with Matchers {
   }
 
   describe("setIfNotExists()") {
-    it("should set a value that does not already exist") {
-      val k = "key-4"
-      val v = 123.45 
-
-      val f1 = client.setIfNotExists(k, v)
+    it("should add key/value if the key does not exist") {
+      val f1 = client.setIfNotExists(keys(3), values(4))
       val rs1 = Await.result(f1, timeout)
-      rs1 should equal(v)
+      rs1 should equal(values(4))
 
-      val f2 = client.get(k)
+      val f2 = client.get(keys(3))
       val rs2 = Await.result(f2, timeout)
-      rs2 should equal(v)
+      rs2 should equal(values(4))
     }
 
-    it("should not set a value that already exists") {
-      val k = "key-5"
-      val v1 = true 
-      val v2 = false 
-
-      val f1 = client.set(k, v1)
+    it("should not set a value for a key that already exists") {
+      val f1 = client.set(keys(4), values(5))
       val rs1 = Await.result(f1, timeout)
       rs1 should equal(None)
 
-      val f2 = client.setIfNotExists(k, v2)
+      val f2 = client.setIfNotExists(keys(4), values(6))
       val rs2 = Await.result(f2, timeout)
-      rs2 should equal(v1)
+      rs2 should equal(values(5))
 
-      val f3 = client.get(k)
+      val f3 = client.get(keys(4))
       val rs3 = Await.result(f3, timeout)
-      rs3 should equal(v1)
+      rs3 should equal(values(5))
     }
   }
 
   describe("get()") {
-    it("should fail when key is not found") {
-      val f1 = client.get("r6*me@")
+    it("should fail with KeyNotFound when key is not found") {
+      val f1 = client.get(keys(5))
       intercept[KeyNotFound] {
         Await.result(f1, timeout)
       } 
@@ -113,8 +106,8 @@ class AkkademyDbClientSpec extends FunSpecLike with Matchers {
   }
 
   describe("delete()") {
-    it("should fail when key is not found") {
-      val f1 = client.delete("-gaJ(n")
+    it("should fail with KeyNotFound when key is not found") {
+      val f1 = client.delete(keys(6))
       intercept[KeyNotFound] {
         Await.result(f1, timeout)
       } 
@@ -122,8 +115,8 @@ class AkkademyDbClientSpec extends FunSpecLike with Matchers {
   }
 
   describe("sendUnexpected()") {
-    it("should fail when sent a message") {
-      val f1 = client.sendUnexpected("junk") 
+    it("should fail with UnexpectedMessage when sent a message") {
+      val f1 = client.sendUnexpected(keys(7)) 
       intercept[UnexpectedMessage] {
         Await.result(f1, timeout)
       }
