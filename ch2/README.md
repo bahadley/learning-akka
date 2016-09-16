@@ -4,11 +4,11 @@ Chapter 2:  Actors and Concurrency
 
 Instructions for running AkkademyDB:
 
-1) Run `akkademydb-messages$ sbt publish-local` (see [details](akkademydb-messages/README.md)).
+1) Run `/akkademydb-messages$ sbt publish-local` (see [details](akkademydb-messages/README.md)).
 
-2) Run `akkademydb-server$ sbt run` (see [details](akkademydb-server/README.md)).
+2) Run `/akkademydb-server$ sbt run` (see [details](akkademydb-server/README.md)).
 
-3) Using a different terminal, run `akkademydb-client$ sbt test` (see [details](akkademydb-client/README.md)).
+3) Using a different terminal, run `/akkademydb-client$ sbt test` (see [details](akkademydb-client/README.md)).
 
 Troubleshooting ideas can be found in [akkademydb-client](akkademydb-client/README.md).  
 
