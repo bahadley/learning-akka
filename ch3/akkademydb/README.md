@@ -9,7 +9,7 @@ The akkademydb-messages library from chapter 2 should still be published locally
 
 ***
 
-Publish this library locally with:
+Publish this library with:
 
 `$ sbt publish-local`
 
