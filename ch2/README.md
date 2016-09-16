@@ -21,7 +21,7 @@ Troubleshooting ideas can be found in [akkademydb-client](akkademydb-client/READ
 
 Intruction from text for project homework:
 
-* Add an atomic `SetIfNotExists` and Delete messages to the AkkademyDB App.
+* Add an atomic `SetIfNotExists` and `Delete` messages to the AkkademyDB App.
 
 * If you need some sbt experience, move the messages to their own project and publish it.
 
