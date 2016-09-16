@@ -3,10 +3,10 @@ package com.akkademy
 import akka.actor.ActorSystem
 import akka.testkit.TestActorRef
 import com.akkademy.messages._
-import org.scalatest.{FunSpecLike, Matchers}
+import org.scalatest.{FunSpec, Matchers}
 
 
-class AkkademyDbSpec extends FunSpecLike with Matchers {
+class AkkademyDbSpec extends FunSpec with Matchers {
   implicit val system = ActorSystem()
 
   private val actor = TestActorRef(new AkkademyDb)

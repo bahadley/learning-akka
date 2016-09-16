@@ -1,13 +1,13 @@
 package com.akkademy
 
-import org.scalatest.{FunSpecLike, Matchers}
+import org.scalatest.{FunSpec, Matchers}
 import scala.concurrent.Await
 import scala.concurrent.duration._
 import scala.language.postfixOps
 import com.akkademy.messages._
 
 
-class AkkademyDbClientSpec extends FunSpecLike with Matchers {
+class AkkademyDbClientSpec extends FunSpec with Matchers {
 
   private val serverAddr = "127.0.0.1:2552" 
 
