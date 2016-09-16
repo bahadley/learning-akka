@@ -129,4 +129,12 @@ class AkkademyDbClientSpec extends FunSpecLike with Matchers {
       }
     }
   }
+
+  describe("clear()") {
+    it("should send a response") {
+      val f1 = client.clear
+      val rs1 = Await.result(f1, timeout)
+      rs1 should not equal(None)
+    }
+  }
 }

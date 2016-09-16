@@ -48,6 +48,13 @@ class AkkademyDbClient(remoteAddress: String) {
     akkademyDb ? Delete(key)
   }
 
+  /* 
+   *  Removes all keys.
+   */
+  def clear(): Future[Any] = {
+    akkademyDb ? Clear()
+  }
+
   /*
    * Used to test sending unexpected requests 
    */ 

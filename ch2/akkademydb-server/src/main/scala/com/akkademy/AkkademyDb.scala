@@ -34,6 +34,11 @@ class AkkademyDb extends Actor with ActorLogging {
         case None        => sender ! Status.Failure(KeyNotFound(msg.key))
       }
 
+    case msg: Clear =>
+      log.info("Rcvd Clear")
+      map.clear 
+      sender ! Status.Success
+
     case _ => sender ! Status.Failure(UnexpectedMessage())
   }
 }
