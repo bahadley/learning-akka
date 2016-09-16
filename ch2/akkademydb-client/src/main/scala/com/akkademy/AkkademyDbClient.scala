@@ -56,7 +56,7 @@ class AkkademyDbClient(remoteAddress: String) {
   }
 
   /*
-   * Used to test sending unexpected requests 
+   * Exercises unexpected message handling. 
    */ 
   def sendUnexpected(msg: String): Future[Any] = {
     akkademyDb ? msg 

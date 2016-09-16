@@ -2,6 +2,9 @@ Chapter 2:  Actors and Concurrency
 
 ***
 
+AkkademyDB is a simple in-memory key/value store.  It demonstrates the use of an Actor, the Ask
+pattern, and Futures. 
+
 Instructions for running AkkademyDB:
 
 1) Run `/akkademydb-messages$ sbt publish-local` (see [details](akkademydb-messages/README.md)).
