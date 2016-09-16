@@ -7,16 +7,18 @@ import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.language.postfixOps
 
+
 object ReverseStringService {
 
   private class ReverseString extends Actor {
     def receive = {
-      case s: String => sender ! s.reverse
-      case _ => sender ! Status.Failure(new Exception("unexpected message"))
+      case s: String => sender() ! s.reverse
+      case _ => sender() ! Status.Failure(new Exception("unexpected message"))
     }
   }
 
   private implicit val timeout = Timeout(1 second)
+
   private val system = ActorSystem("StringServices") 
   private val actor = system.actorOf(Props[ReverseString])
 
