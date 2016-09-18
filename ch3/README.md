@@ -10,7 +10,7 @@ The following actors are used:
 
 * **secrets**: receives Snoop messages from **spy** and ultimately returns plaintext back to **spy**.
 
-* **akkademydb**: receives Get messages from **secrets** and returns ciphertext.
+* **cache**: receives Get messages from **secrets** and returns ciphertext.
 
 * **decrypter**: receives DecryptCipherText messages from **secrets** and returns plaintext.
 
