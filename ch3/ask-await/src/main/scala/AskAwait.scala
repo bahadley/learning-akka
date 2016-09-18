@@ -11,7 +11,8 @@ import scala.concurrent.duration._
 import scala.language.postfixOps
 
 
-case class Test(id: String)
+case class Rumor(id: String)
+case class Whisper(id: String)
 case class DecryptCipherText(cipherText: String)
 case class DecryptResponse(plainText: String)
 
@@ -19,30 +20,43 @@ case class DecryptResponse(plainText: String)
 object Main extends App {
   val system = ActorSystem("ask-await")
   val cache = system.actorOf(Props[AkkademyDb], name = "cache")
-  val service = system.actorOf(Props(classOf[DecryptionService], cache.path.toString), name = "service")
+  val secrets = system.actorOf(Props(classOf[Secrets], cache.path.toString), name = "secrets")
+  val snoop = system.actorOf(Props(classOf[Snoop], secrets.path.toString), name = "snoop")
 
   val id = "1"
 
   // Pre-populate the cache
-  cache ! Set(id, "(encryption)Viva Akka!")
+  cache ! Set(id, "(encryption)Akka rocks!")
 
-  service ! Test(id) 
+  snoop ! Rumor(id) 
 
-  Thread.sleep(1000)
+  Thread.sleep(500)
   system.terminate
 }
 
+class Snoop(secretsPath: String) extends Actor with ActorLogging {
+  private val secrets = context.actorSelection(secretsPath) 
+  private implicit val timeout = Timeout(2 seconds)
 
-class DecryptionService(cachePath: String) extends Actor with ActorLogging {
+  def receive = LoggingReceive {
+    case msg: Rumor =>
+      log.info("Rcvd Rumor(id: [{}])", msg.id)
+      val f: Future[String] = ask(secrets, Whisper(msg.id)).mapTo[String]
+      val secret = Await.result(f, timeout.duration)
+      log.info("secret: [{}]", secret)
+  }
+}
+
+class Secrets(cachePath: String) extends Actor with ActorLogging {
   private val cache = context.actorSelection(cachePath) 
   private val decrypter = context.actorOf(Props[Decrypter], name = "decrypter")
   private implicit val timeout = Timeout(2 seconds)
 
   def receive = LoggingReceive {
-    case msg: Test =>
-      log.info("Rcvd Test(id: [{}])", msg.id)
-      val f1: Future[String] = ask(cache, Get(msg.id)).mapTo[String]
-      val ct = Await.result(f1, timeout.duration)
+    case msg: Whisper =>
+      log.info("Rcvd Whisper(id: [{}])", msg.id)
+      val f: Future[String] = ask(cache, Get(msg.id)).mapTo[String]
+      val ct = Await.result(f, timeout.duration)
       log.info("ciphertext: [{}]", ct)
       decrypter ! DecryptCipherText(ct)
 
@@ -59,4 +73,3 @@ class Decrypter extends Actor with ActorLogging {
       sender() ! DecryptResponse(plainText) 
   }
 }
-
