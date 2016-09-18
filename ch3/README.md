@@ -27,6 +27,8 @@ Examples:
 
 * **ask-and-replyto**: shows the ask replyTo pattern in place of the pipe pattern.
 
+* **ask-with-await**: shows the ask pattern using `onComplete` rather than blocking threads with `Await`
+
 ***
 
 Prerequisite:  
