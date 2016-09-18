@@ -1,4 +1,4 @@
-name := "ask"
+name := "ask-and-tell"
 
 version := "0.0.1"
 
