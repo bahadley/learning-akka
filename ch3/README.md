@@ -19,13 +19,13 @@ The following actors are used:
 
 Examples:
 
-* **ask-and-tell**:  shows the ask pattern and contrasts it with a tell exchange between **secrets** and **decrypter**.
+* **ask-and-tell**:  shows the ask pattern in contrast with a tell exchange between **secrets** and **decrypter**.
 
 * **ask-only**: replaces the tell exchange with the ask pattern.
 
 * **ask-and-pipeto**: shows how a Future can be piped to an actor.
 
-* **ask-and-replyto**: shows the replyTo pattern in place of the pipe pattern.
+* **ask-and-replyto**: shows the ask replyTo pattern in place of the pipe pattern.
 
 ***
 
