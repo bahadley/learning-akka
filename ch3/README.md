@@ -25,6 +25,8 @@ Examples:
 
 * **ask-and-pipeto**: shows how a Future can be piped to an actor.
 
+* **ask-and-replyto**: shows the replyTo pattern in place of the pipe pattern.
+
 ***
 
 Prerequisite:  
