@@ -6,20 +6,20 @@ Various message patterns are used to demonstrate communications between actors.
 
 The following actors are used:
 
-* spy: receives Rumor messages from the Main object.
+* **spy**: receives Rumor messages from the Main object.
 
-* secrets: receives Snoop messages from spy and ultimately returns plaintext back to spy.
+* **secrets**: receives Snoop messages from **spy** and ultimately returns plaintext back to **spy**.
 
-* akkademydb: receives Get messages from secrets and returns ciphertext.
+* **akkademydb**: receives Get messages from **secrets** and returns ciphertext.
 
-* decrypter: receives DecryptCipherText messages from secrets and returns plaintext.
+* **decrypter**: receives DecryptCipherText messages from **secrets** and returns plaintext.
 
 
 ***
 
 Examples:
 
-* ask-and-tell:  shows basic usage of the ask pattern with Futures and contrasts with a tell exchange between secrets and decrypter.
+* ask-and-tell:  shows the ask pattern and contrasts it with a tell exchange between **secrets** and **decrypter**.
 
 * ask-only: replaces the tell exchange with the ask pattern.
 
@@ -36,7 +36,7 @@ Instructions for running examples:
 
 1) Run `/akkademydb$ sbt publish-local` (see [details](akkademydb/README.md)).
 
-2) Change into example directories and run `$ sbt run`.
+2) Change into example directories and use `$ sbt run`
 
 ***
 
