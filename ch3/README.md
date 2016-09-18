@@ -27,7 +27,7 @@ Examples:
 
 * **ask-and-replyto**: shows the ask replyTo pattern in place of the pipe pattern.
 
-* **ask-with-await**: shows the ask pattern using `onComplete` rather than blocking threads with `Await`
+* **ask-without-await**([code](ask-without-await/src/main/scala/AskWithoutAwait.scala)): shows the ask pattern using `onComplete` rather than blocking threads with `Await`
 
 ***
 
