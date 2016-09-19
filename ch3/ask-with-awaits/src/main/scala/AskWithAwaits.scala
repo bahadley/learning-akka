@@ -45,7 +45,7 @@ class Spy(secretsPath: String) extends Actor with ActorLogging {
 
       val f: Future[String] = ask(secrets, Snoop(msg.id)).mapTo[String]
       val secret = Await.result(f, timeout.duration)
-      log.info("secret: {}", secret)
+      log.info("rumor {} is {}", msg.id, secret)
   }
 }
 
