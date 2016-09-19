@@ -19,11 +19,11 @@ The following actors are used:
 
 Examples:
 
-* **ask-and-tell** ([code](ask-and-tell/src/main/scala/AskAndTell.scala)):
-shows the ask pattern in contrast with a tell exchange between **secrets** and **decrypter**.
+* **ask-with-awaits** ([code](ask-with-awaits/src/main/scala/AskWithAwait.scala)):
+shows the ask pattern made simple but inefficient with blocking threads
 
-* **ask-only** ([code](ask-only/src/main/scala/AskOnly.scala)):
-replaces the tell exchange with the ask pattern.
+* **ask-without-awaits** ([code](ask-without-awaits/src/main/scala/AskWithoutAwaits.scala)):
+shows the ask pattern without blocking using `onComplete` and failure handling 
 
 * **ask-and-pipeto** ([code](ask-and-pipeto/src/main/scala/AskAndPipeTo.scala)):
 shows how a Future can be piped to an actor.
@@ -34,8 +34,6 @@ shows the ask replyTo pattern in place of the pipe pattern.
 * **forward** ([code](forward/src/main/scala/Forward.scala)):
 uses a **forwarder** actor that forwards a *Rumor* message from **spy** to **secrets**.
 
-* **ask-without-await** ([code](ask-without-await/src/main/scala/AskWithoutAwait.scala)):
-shows the ask pattern using `onComplete` rather than blocking threads with `Await`
 
 ***
 
