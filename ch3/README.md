@@ -12,7 +12,7 @@ The following actors are used:
 
 * **cache**: receives *Get* messages from **secrets** and returns ciphertext.
 
-* **decrypter**: receives *DecryptCipherText* messages from **secrets** and returns plaintext.
+* **decrypter**: receives *Decrypt* messages from **secrets** and returns plaintext.
 
 
 ***
