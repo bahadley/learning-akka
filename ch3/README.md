@@ -31,6 +31,9 @@ shows how a Future can be piped to an actor.
 * **ask-and-replyto** ([code](ask-and-replyto/src/main/scala/AskAndReplyTo.scala)):
 shows the ask replyTo pattern in place of the pipe pattern.
 
+* **forwarder** ([code](forwarder/src/main/scala/Forwarder.scala)):
+uses a **forwarder** actor that forwards a *Rumor* message between **spy** and **secrets**.
+
 * **ask-without-await** ([code](ask-without-await/src/main/scala/AskWithoutAwait.scala)):
 shows the ask pattern using `onComplete` rather than blocking threads with `Await`
 
