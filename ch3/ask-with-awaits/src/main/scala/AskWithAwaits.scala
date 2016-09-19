@@ -50,7 +50,6 @@ class Spy(secretsPath: String) extends Actor with ActorLogging {
 }
 
 class Secrets(cachePath: String) extends Actor with ActorLogging {
-  import scala.concurrent.ExecutionContext.Implicits.global
   private implicit val timeout = Timeout(2 seconds)
 
   private val cache = context.actorSelection(cachePath) 
