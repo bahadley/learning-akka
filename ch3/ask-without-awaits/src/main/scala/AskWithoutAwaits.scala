@@ -51,7 +51,7 @@ class Spy(secretsPath: String) extends Actor with ActorLogging {
         case Success(secret: String) =>
           log.info("rumor {} is {}", msg.id, secret)
         case Failure(e) =>
-          log.info("rumor {} was {}", msg.id, e.getMessage)
+          log.info("rumor {} was problematic: {}", msg.id, e.getMessage)
       }
   }
 }
