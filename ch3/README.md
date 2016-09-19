@@ -19,7 +19,7 @@ The following actors are used:
 
 Examples:
 
-* **ask-with-awaits** ([code](ask-with-awaits/src/main/scala/AskWithAwait.scala)):
+* **ask-with-awaits** ([code](ask-with-awaits/src/main/scala/AskWithAwaits.scala)):
 shows the ask pattern made simple but inefficient with blocking threads
 
 * **ask-without-awaits** ([code](ask-without-awaits/src/main/scala/AskWithoutAwaits.scala)):
