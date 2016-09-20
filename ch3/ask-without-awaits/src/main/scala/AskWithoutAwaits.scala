@@ -26,7 +26,7 @@ object Main extends App {
   val spy = system.actorOf(Props(classOf[Spy], secrets.path.toString), name = "spy")
 
   // Pre-populate the cache
-  val id = "1"
+  val id = "hasit"
   cache ! Set(id, "(encryption)Akka rocks!")
 
   spy ! Rumor(id) 
@@ -49,7 +49,7 @@ class Spy(secretsPath: String) extends Actor with ActorLogging {
       val f: Future[String] = ask(secrets, Snoop(msg.id)).mapTo[String]
       f onComplete {
         case Success(secret: String) =>
-          log.info("rumor {} is {}", msg.id, secret)
+          log.info("rumor {}: {}", msg.id, secret)
         case Failure(e) =>
           log.info("rumor {} was problematic: {}", msg.id, e.getMessage)
       }

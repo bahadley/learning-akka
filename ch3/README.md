@@ -19,7 +19,8 @@ It is assumed that **decrypter** implements a long running CPU-bound process to 
 
 ***
 
-Examples:
+The following examples are intentionally self-contained so that all the code related to a pattern can be
+easily read and modified.
 
 * **ask-with-awaits** ([code](ask-with-awaits/src/main/scala/AskWithAwaits.scala)):
 shows the ask pattern made simple but inefficient with blocking threads.
