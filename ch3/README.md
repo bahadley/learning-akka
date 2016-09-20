@@ -15,7 +15,7 @@ The following actors are used:
 * **decrypter**: receives *Decrypt* messages from **secrets** and returns plaintext.
 
 It is assumed that **decrypter** implements a long running CPU-bound process to decrypt ciphertext and
-**cache** is I/0 bound.  These assumptions prompt the use of Futures in **spy** and **secrets**.
+**cache** is I/0 bound.  These assumptions prompt the use of Futures within **spy** and **secrets**.
 
 ***
 
