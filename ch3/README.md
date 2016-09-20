@@ -32,7 +32,7 @@ uses the replyTo pattern by including a **spy** ActorRef in the *Decrypt* messag
 shows how a Future can be piped to an actor.
 
 * **forward** ([code](forward/src/main/scala/Forward.scala)):
-**forwarder** relays a *Rumor* message from **spy** to **secrets**, who responds back to **spy**.
+**forwarder** relays a *Rumor* message from **spy** to **secrets**, which responds back to **spy**.
 
 
 ***
