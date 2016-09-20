@@ -57,7 +57,6 @@ class Spy(forwarderPath: String) extends Actor with ActorLogging {
 
 class Forwarder(secretsPath: String) extends Actor with ActorLogging {
   private val secrets = context.actorSelection(secretsPath)
-  private implicit val timeout = Timeout(2 seconds)
 
   def receive = LoggingReceive {
     case msg: Rumor =>
