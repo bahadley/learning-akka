@@ -32,21 +32,14 @@ uses the replyTo pattern by including a **spy** ActorRef in the *Decrypt* messag
 shows how a Future can be piped to an actor.
 
 * **forward** ([code](forward/src/main/scala/Forward.scala)):
-uses a **forwarder** actor that forwards a *Rumor* message from **spy** to **secrets**.
+a **forwarder** actor forwards a *Rumor* message from **spy** to **secrets**, which sends plaintext directly back to **spy**.
 
 
 ***
 
-Prerequisite:  
+To run examples:
 
-The Chapter 2 `akkademydb-messages` project is published locally (see [details](../ch2/akkademydb-messages/README.md))
-
-
-Instructions for running examples:
-
-1) Run `/akkademydb$ sbt publish-local` (see [details](akkademydb/README.md)).
-
-2) Change into example directories and use `$ sbt run`
+Change into any example directory and use `$ sbt run`
 
 ***
 
