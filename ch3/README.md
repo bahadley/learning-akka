@@ -26,9 +26,9 @@ shows the ask pattern made simple but inefficient with blocking threads.
 shows the ask pattern without blocking using `onComplete` and failure handling.
 
 * **replyto** ([code](replyto/src/main/scala/ReplyTo.scala)):
-shows the ask replyTo pattern.
+uses the replyTo pattern by including a **spy** ActorRef in the *Decrypt* message.
 
-* **ask-and-pipeto** ([code](ask-and-pipeto/src/main/scala/AskAndPipeTo.scala)):
+* **pipeto** ([code](pipeto/src/main/scala/PipeTo.scala)):
 shows how a Future can be piped to an actor.
 
 * **forward** ([code](forward/src/main/scala/Forward.scala)):
