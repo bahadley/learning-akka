@@ -34,6 +34,8 @@ shows how a Future can be piped to an actor.
 * **forward** ([code](forward/src/main/scala/Forward.scala)):
 **forwarder** relays a *Rumor* message from **spy** to **secrets**, which responds back to **spy**.
 
+* **self-message** ([code](self-message/src/main/scala/SelfMessage.scala)):
+**secrets** sends a message to itself in order to separate **cache** and **decrypter** related tasks. 
 
 ***
 
