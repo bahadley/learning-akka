@@ -40,6 +40,9 @@ shows how a Future can be piped to an actor.
 * **self-message** ([code](self-message/src/main/scala/SelfMessage.scala)):
 **secrets** sends a message to itself in order to separate **cache** and **decrypter** related tasks. 
 
+* **variety** ([code](variety/src/main/scala/Variety.scala)):
+shows different styles of handling Futures and exceptions (i.e., `onComplete`, `recover`, `foreach`)
+
 ***
 
 To run examples:
