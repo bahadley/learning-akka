@@ -1,7 +1,3 @@
-Chapter 2:  Actors and Concurrency
-
-***
-
 AkkademyDB is a simple in-memory key/value store.  It demonstrates:
 
 * Interaction between an Actor and non-Actor client.
@@ -22,4 +18,3 @@ Instructions for running AkkademyDB:
 
 Troubleshooting ideas can be found in [akkademydb-client](akkademydb-client/README.md).  
 
-***

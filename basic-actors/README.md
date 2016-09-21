@@ -4,4 +4,3 @@ Demonstrates:
 
 * Actor logging
 
-***
