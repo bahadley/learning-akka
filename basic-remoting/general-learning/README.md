@@ -1,4 +1,4 @@
-Implements the general learning exercise in chapter 2 .
+Implements the general learning exercise in chapter 2 of **Learning Akka**.
 
 ***
 Instructions from text:

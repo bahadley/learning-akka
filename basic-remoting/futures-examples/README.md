@@ -1,4 +1,4 @@
-Implements the Futures examples in chapter 2.
+Implements the Futures examples in chapter 2 of **Learning Akka**.
 
 ***
 

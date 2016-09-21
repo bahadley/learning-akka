@@ -1,10 +1,12 @@
-AkkademyDB is a simple in-memory key/value store.  It demonstrates:
+Demonstrates:
 
 * Interaction between an Actor and non-Actor client.
 
-* Akka remoting.
+* Akka remoting with `actorSelection`.
 
 * Ask pattern with Futures.
+
+* A simple in-memory key/value store called AkkademyDB.
 
 ***
 
