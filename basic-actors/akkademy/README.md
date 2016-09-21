@@ -1,4 +1,5 @@
-Implements the AkkademyDB example.
+Implements a bare bones key/value in-memory store.  It will be expanded on in 
+[basic-remoting](../../basic-remoting).
 
 ***
 

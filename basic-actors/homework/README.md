@@ -1,4 +1,4 @@
-Implements the chapter 1 homework.
+Implements the chapter 1 homework from **Learning Akka**.
 
 ***
 Instructions from text:
