@@ -1,4 +1,4 @@
-Scala examples using the [Akka](akka.io) toolkit.
+Scala examples using the [Akka](http://akka.io) toolkit.
 
 Some examples build on code in [Learning Akka](https://www.packtpub.com/application-development/learning-akka) by Jason Goodwin
 
