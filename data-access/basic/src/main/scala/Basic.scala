@@ -7,13 +7,13 @@ import scala.concurrent.{Await, Future}
 import scala.language.postfixOps
 import slick.driver.H2Driver.api._
 
-
+case class DoCoffee()
 
 object Main extends App {
   val system = ActorSystem("basic")
   val cafe = system.actorOf(Props[Cafe], name = "cafe")
 
-  cafe ! "Create"
+  cafe ! DoCoffee 
 
   Thread.sleep(500)  // Increase if necessary
   system.terminate
@@ -51,13 +51,11 @@ class Cafe extends Actor with ActorLogging {
   }
   val coffees = TableQuery[Coffees]
 
+  val db = Database.forConfig("h2mem1")
 
   def receive =  {
-    case "Create" =>
-
-      val db = Database.forConfig("h2mem1")
+    case DoCoffee =>
       try {
-
         val setup = DBIO.seq(
           // Create the tables, including primary and foreign keys
           (suppliers.schema ++ coffees.schema).create,
@@ -88,24 +86,10 @@ class Cafe extends Actor with ActorLogging {
         println("Coffees:")
         db.run(coffees.result).map(_.foreach {
           case (name, supID, price, sales, total) =>
-          log.debug("  " + name + "\t" + supID + "\t" + price + "\t" + sales + "\t" + total)
-        })
-        // Equivalent SQL code:
-        // select COF_NAME, SUP_ID, PRICE, SALES, TOTAL from COFFEES
-      } finally db.close
-
-    case "Read" =>
-      val db = Database.forConfig("h2mem1")
-      try {
-        // Read all coffees and print them to the console
-        println("Coffees:")
-        db.run(coffees.result).map(_.foreach {
-          case (name, supID, price, sales, total) =>
           println("  " + name + "\t" + supID + "\t" + price + "\t" + sales + "\t" + total)
         })
         // Equivalent SQL code:
         // select COF_NAME, SUP_ID, PRICE, SALES, TOTAL from COFFEES
-    } finally db.close
-
+      } finally db.close
   }
 }
