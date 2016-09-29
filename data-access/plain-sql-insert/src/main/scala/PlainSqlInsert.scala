@@ -13,7 +13,7 @@ object Main extends App {
 
   inds ! Add("AM", "Aerospace & Defense", "BM") 
 
-  Thread.sleep(500)  // Increase if necessary
+  Thread.sleep(2000)  // Increase if necessary
   system.terminate
 }
 
