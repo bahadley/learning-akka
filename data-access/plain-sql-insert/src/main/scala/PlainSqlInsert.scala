@@ -27,12 +27,6 @@ class Industries extends Actor with ActorLogging {
   def receive = {
     case msg: Add =>
 
-      //val action = sql"select IN_ID, IN_NAME, IN_SC_ID from INDUSTRY".as[(String,String,String)]
-      //val l = db.run(action)
-      //l foreach println
-      //val action = sqlu"""insert into industry (IN_ID, IN_NAME, IN_SC_ID) values ('AE','Casinos & Gaming','CC')"""
-      //db.run(action)
-
       val f: Future[_] = {
         db.run(insert(msg))
       }
