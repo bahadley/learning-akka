@@ -1,18 +1,15 @@
 package basic
 
-import java.util.concurrent.atomic.{ AtomicBoolean, AtomicInteger, AtomicLong }
-
 import akka.AkkaException
 import akka.actor.Scheduler
 import akka.util.Unsafe
 
-import scala.util.control.NoStackTrace
-import java.util.concurrent.{ Callable, CompletionStage, CopyOnWriteArrayList }
+import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.atomic.{ AtomicBoolean, AtomicInteger, AtomicLong }
 
-import scala.concurrent.{ Await, ExecutionContext, Future, Promise }
+import scala.concurrent.{ ExecutionContext, Future, Promise, TimeoutException }
 import scala.concurrent.duration._
-import scala.concurrent.TimeoutException
-import scala.util.control.NonFatal
+import scala.util.control.{ NonFatal, NoStackTrace }
 import scala.util.Success
 
 
@@ -20,16 +17,10 @@ class ModCircuitBreaker(
   scheduler:                Scheduler,
   maxFailures:              Int,
   callTimeout:              FiniteDuration,
-  resetTimeout:             FiniteDuration,
-  maxResetTimeout:          FiniteDuration)(implicit executor: ExecutionContext) extends ModAbstractCircuitBreaker {
+  resetTimeout:             FiniteDuration)(implicit executor: ExecutionContext) extends ModAbstractCircuitBreaker {
 
   def this(executor: ExecutionContext, scheduler: Scheduler, maxFailures: Int, callTimeout: FiniteDuration, resetTimeout: FiniteDuration) = {
-    this(scheduler, maxFailures, callTimeout, resetTimeout, 36500.days)(executor)
-  }
-
-  // add the old constructor to make it binary compatible
-  def this(scheduler: Scheduler, maxFailures: Int, callTimeout: FiniteDuration, resetTimeout: FiniteDuration)(implicit executor: ExecutionContext) = {
-    this(scheduler, maxFailures, callTimeout, resetTimeout, 36500.days)(executor)
+    this(scheduler, maxFailures, callTimeout, resetTimeout)(executor)
   }
 
   @volatile
