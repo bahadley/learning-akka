@@ -15,65 +15,26 @@ import scala.concurrent.TimeoutException
 import scala.util.control.NonFatal
 import scala.util.Success
 
-import scala.compat.java8.FutureConverters
 
-/**
- * Provides circuit breaker functionality to provide stability when working with "dangerous" operations, e.g. calls to
- * remote systems
- *
- * Transitions through three states:
- * - In *Closed* state, calls pass through until the `maxFailures` count is reached.  This causes the circuit breaker
- * to open.  Both exceptions and calls exceeding `callTimeout` are considered failures.
- * - In *Open* state, calls fail-fast with an exception.  After `resetTimeout`, circuit breaker transitions to
- * half-open state.
- * - In *Half-Open* state, the first call will be allowed through, if it succeeds the circuit breaker will reset to
- * closed state.  If it fails, the circuit breaker will re-open to open state.  All calls beyond the first that
- * execute while the first is running will fail-fast with an exception.
- *
- * @param scheduler Reference to Akka scheduler
- * @param maxFailures Maximum number of failures before opening the circuit
- * @param callTimeout [[scala.concurrent.duration.FiniteDuration]] of time after which to consider a call a failure
- * @param resetTimeout [[scala.concurrent.duration.FiniteDuration]] of time after which to attempt to close the circuit
- * @param executor [[scala.concurrent.ExecutionContext]] used for execution of state transition listeners
- */
 class ModCircuitBreaker(
   scheduler:                Scheduler,
   maxFailures:              Int,
   callTimeout:              FiniteDuration,
   resetTimeout:             FiniteDuration,
-  maxResetTimeout:          FiniteDuration,
-  exponentialBackoffFactor: Double)(implicit executor: ExecutionContext) extends ModAbstractCircuitBreaker {
-
-  require(exponentialBackoffFactor >= 1.0, "factor must be >= 1.0")
+  maxResetTimeout:          FiniteDuration)(implicit executor: ExecutionContext) extends ModAbstractCircuitBreaker {
 
   def this(executor: ExecutionContext, scheduler: Scheduler, maxFailures: Int, callTimeout: FiniteDuration, resetTimeout: FiniteDuration) = {
-    this(scheduler, maxFailures, callTimeout, resetTimeout, 36500.days, 1.0)(executor)
+    this(scheduler, maxFailures, callTimeout, resetTimeout, 36500.days)(executor)
   }
 
   // add the old constructor to make it binary compatible
   def this(scheduler: Scheduler, maxFailures: Int, callTimeout: FiniteDuration, resetTimeout: FiniteDuration)(implicit executor: ExecutionContext) = {
-    this(scheduler, maxFailures, callTimeout, resetTimeout, 36500.days, 1.0)(executor)
+    this(scheduler, maxFailures, callTimeout, resetTimeout, 36500.days)(executor)
   }
 
-  /**
-   * The `resetTimeout` will be increased exponentially for each failed attempt to close the circuit.
-   * The default exponential backoff factor is 2.
-   *
-   * @param maxResetTimeout the upper bound of resetTimeout
-   */
-  def withExponentialBackoff(maxResetTimeout: FiniteDuration): ModCircuitBreaker = {
-    new ModCircuitBreaker(scheduler, maxFailures, callTimeout, resetTimeout, maxResetTimeout, 2.0)(executor)
-  }
-
-  /**
-   * Holds reference to current state of ModCircuitBreaker - *access only via helper methods*
-   */
   @volatile
   private[this] var _currentStateDoNotCallMeDirectly: State = Closed
 
-  /**
-   * Holds reference to current resetTimeout of ModCircuitBreaker - *access only via helper methods*
-   */
   @volatile
   private[this] var _currentResetTimeoutDoNotCallMeDirectly: FiniteDuration = resetTimeout
 
@@ -119,24 +80,7 @@ class ModCircuitBreaker(
    *   `scala.concurrent.TimeoutException` if the call timed out
    *
    */
-  def withModCircuitBreaker[T](body: ⇒ Future[T]): Future[T] = currentState.invoke(body)
-
-  /**
-   * Wraps invocations of synchronous calls that need to be protected
-   *
-   * Calls are run in caller's thread. Because of the synchronous nature of
-   * this call the  `scala.concurrent.TimeoutException` will only be thrown
-   * after the body has completed.
-   *
-   * Throws java.util.concurrent.TimeoutException if the call timed out.
-   *
-   * @param body Call needing protected
-   * @return The result of the call
-   */
-  def withSyncModCircuitBreaker[T](body: ⇒ T): T =
-    Await.result(
-      withModCircuitBreaker(try Future.successful(body) catch { case NonFatal(t) ⇒ Future.failed(t) }),
-      callTimeout)
+  def guard[T](body: ⇒ Future[T]): Future[T] = currentState.invoke(body)
 
   /**
    * Mark a successful call through ModCircuitBreaker. Sometimes the callee of ModCircuitBreaker sends back a message to the
@@ -154,36 +98,6 @@ class ModCircuitBreaker(
    */
   def fail(): Unit = {
     currentState.callFails()
-  }
-
-  /**
-   * Return true if the internal state is Closed. WARNING: It is a "power API" call which you should use with care.
-   * Ordinal use cases of ModCircuitBreaker expects a remote call to return Future, as in withModCircuitBreaker.
-   * So, if you check the state by yourself, and make a remote call outside ModCircuitBreaker, you should
-   * manage the state yourself.
-   */
-  def isClosed: Boolean = {
-    currentState == Closed
-  }
-
-  /**
-   * Return true if the internal state is Open. WARNING: It is a "power API" call which you should use with care.
-   * Ordinal use cases of ModCircuitBreaker expects a remote call to return Future, as in withModCircuitBreaker.
-   * So, if you check the state by yourself, and make a remote call outside ModCircuitBreaker, you should
-   * manage the state yourself.
-   */
-  def isOpen: Boolean = {
-    currentState == Open
-  }
-
-  /**
-   * Return true if the internal state is HalfOpen. WARNING: It is a "power API" call which you should use with care.
-   * Ordinal use cases of ModCircuitBreaker expects a remote call to return Future, as in withModCircuitBreaker.
-   * So, if you check the state by yourself, and make a remote call outside ModCircuitBreaker, you should
-   * manage the state yourself.
-   */
-  def isHalfOpen: Boolean = {
-    currentState == HalfOpen
   }
 
   /**
@@ -217,17 +131,6 @@ class ModCircuitBreaker(
   def onHalfOpen(callback: ⇒ Unit): ModCircuitBreaker = onHalfOpen(new Runnable { def run = callback })
 
   /**
-   * JavaAPI for onHalfOpen
-   *
-   * @param callback Handler to be invoked on state change
-   * @return ModCircuitBreaker for fluent usage
-   */
-  def onHalfOpen(callback: Runnable): ModCircuitBreaker = {
-    HalfOpen addListener callback
-    this
-  }
-
-  /**
    * Adds a callback to execute when circuit breaker state closes
    *
    * The callback is run in the [[scala.concurrent.ExecutionContext]] supplied in the constructor.
@@ -236,17 +139,6 @@ class ModCircuitBreaker(
    * @return ModCircuitBreaker for fluent usage
    */
   def onClose(callback: ⇒ Unit): ModCircuitBreaker = onClose(new Runnable { def run = callback })
-
-  /**
-   * JavaAPI for onClose
-   *
-   * @param callback Handler to be invoked on state change
-   * @return ModCircuitBreaker for fluent usage
-   */
-  def onClose(callback: Runnable): ModCircuitBreaker = {
-    Closed addListener callback
-    this
-  }
 
   /**
    * Retrieves current failure count.
@@ -535,13 +427,6 @@ class ModCircuitBreaker(
       scheduler.scheduleOnce(currentResetTimeout) {
         attemptReset()
       }
-      val nextResetTimeout = currentResetTimeout * exponentialBackoffFactor match {
-        case f: FiniteDuration ⇒ f
-        case _                 ⇒ currentResetTimeout
-      }
-
-      if (nextResetTimeout < maxResetTimeout)
-        swapResetTimeout(currentResetTimeout, nextResetTimeout)
     }
 
     /**

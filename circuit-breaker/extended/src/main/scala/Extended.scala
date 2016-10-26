@@ -25,8 +25,14 @@ object Main extends App {
   // Pre-populate data 
   val id1 = "hasit"
   data ! Set(id1, "Akka rocks!")
+  val id2 = "hasitagain"
+  data ! Set(id2, "Akka double rocks!")
 
   spy ! Rumor(id1) 
+  Thread.sleep(2000)
+  spy ! Rumor(id2) 
+  Thread.sleep(25000)
+  spy ! Rumor(id2) 
 
   Thread.sleep(500)  // Increase if necessary
   system.terminate
@@ -59,7 +65,7 @@ class Breaker(data: ActorRef) extends Actor with ActorLogging {
       context.system.scheduler,
       maxFailures = 1,
       callTimeout = 1.second,
-      resetTimeout = 1.minute).onOpen(notifyMeOnOpen())
+      resetTimeout = 20.seconds).onOpen(notifyMeOnOpen())
  
   def notifyMeOnOpen(): Unit =
     log.warning("CircuitBreaker is now open, and will not close for one minute")
@@ -67,7 +73,7 @@ class Breaker(data: ActorRef) extends Actor with ActorLogging {
   def receive = {
     case msg: Rumor =>
       log.info("Rcvd Rumor(id: {})", msg.id)
-      breaker.withModCircuitBreaker(ask(data, Get(msg.id)).mapTo[String]) pipeTo sender()
+      breaker.guard(ask(data, Get(msg.id)).mapTo[String]) pipeTo sender()
   }
 }
 
@@ -76,7 +82,7 @@ class Data extends Actor with ActorLogging {
   def receive = {
     case msg: Get =>
       log.info("Rcvd Get(key: {})", msg.key)
-      Thread.sleep(1050)
+      if (msg.key == "hasit") Thread.sleep(1050)
       map.get(msg.key) match {
         case Some(value) => sender() ! value
         case None        => sender() ! Status.Failure(KeyNotFound(msg.key))
