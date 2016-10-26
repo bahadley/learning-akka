@@ -74,24 +74,6 @@ class ModCircuitBreaker(
   def guard[T](body: ⇒ Future[T]): Future[T] = currentState.invoke(body)
 
   /**
-   * Mark a successful call through ModCircuitBreaker. Sometimes the callee of ModCircuitBreaker sends back a message to the
-   * caller Actor. In such a case, it is convenient to mark a successful call instead of using Future
-   * via [[withModCircuitBreaker]]
-   */
-  def succeed(): Unit = {
-    currentState.callSucceeds()
-  }
-
-  /**
-   * Mark a failed call through ModCircuitBreaker. Sometimes the callee of ModCircuitBreaker sends back a message to the
-   * caller Actor. In such a case, it is convenient to mark a failed call instead of using Future
-   * via [[withModCircuitBreaker]]
-   */
-  def fail(): Unit = {
-    currentState.callFails()
-  }
-
-  /**
    * Adds a callback to execute when circuit breaker opens
    *
    * The callback is run in the [[scala.concurrent.ExecutionContext]] supplied in the constructor.
@@ -131,14 +113,7 @@ class ModCircuitBreaker(
    */
   def onClose(callback: ⇒ Unit): ModCircuitBreaker = onClose(new Runnable { def run = callback })
 
-  /**
-   * Retrieves current failure count.
-   *
-   * @return count
-   */
-  private def currentFailureCount: Int = Closed.get
-
-  /**
+   /**
    * Implements consistent transition between states. Throws IllegalStateException if an invalid transition is attempted.
    *
    * @param fromState State being transitioning from
