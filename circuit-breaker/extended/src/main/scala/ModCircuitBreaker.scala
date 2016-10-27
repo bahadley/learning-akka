@@ -311,7 +311,7 @@ class ModCircuitBreaker(
      * @return Future containing result of protected call
      */
     override def invoke[T](body: ⇒ Future[T]): Future[T] =
-      if (compareAndSet(true, false)) callThrough(body) else Promise.failed[T](new ModCircuitBreakerOpenException(0.seconds)).future
+      if (compareAndSet(true, false)) callThrough(body) else Promise.failed[T](new ModCircuitBreakerOpenException()).future
 
     /**
      * Reset breaker on successful call.
@@ -354,19 +354,7 @@ class ModCircuitBreaker(
      * @return Future containing result of protected call
      */
     override def invoke[T](body: ⇒ Future[T]): Future[T] =
-      Promise.failed[T](new ModCircuitBreakerOpenException(remainingDuration())).future
-
-    /**
-     * Calculate remaining duration until reset to inform the caller in case a backoff algorithm is useful
-     *
-     * @return duration to when the breaker will attempt a reset by transitioning to half-open
-     */
-    private def remainingDuration(): FiniteDuration = {
-      val fromOpened = System.nanoTime() - get
-      val diff = currentResetTimeout.toNanos - fromOpened
-      if (diff <= 0L) Duration.Zero
-      else diff.nanos
-    }
+      Promise.failed[T](new ModCircuitBreakerOpenException()).future
 
     /**
      * No-op for open, calls are never executed so cannot succeed or fail
@@ -408,11 +396,8 @@ class ModCircuitBreaker(
 /**
  * Exception thrown when Circuit Breaker is open.
  *
- * @param remainingDuration Stores remaining time before attempting a reset.  Zero duration means the breaker is
- *                          currently in half-open state.
  * @param message Defaults to "Circuit Breaker is open; calls are failing fast"
  */
 class ModCircuitBreakerOpenException(
-  val remainingDuration: FiniteDuration,
-  message:               String         = "Circuit Breaker is open; calls are failing fast")
+  message: String = "Circuit Breaker is open; calls are failing fast")
 extends AkkaException(message) with NoStackTrace
