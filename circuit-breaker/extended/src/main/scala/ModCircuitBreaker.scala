@@ -19,9 +19,12 @@ class ModCircuitBreaker(
   callTimeout:              FiniteDuration,
   resetTimeout:             FiniteDuration)(implicit executor: ExecutionContext) extends ModAbstractCircuitBreaker {
 
-  def this(executor: ExecutionContext, scheduler: Scheduler, maxFailures: Int, callTimeout: FiniteDuration, resetTimeout: FiniteDuration) = {
-    this(scheduler, maxFailures, callTimeout, resetTimeout)(executor)
-  }
+  def this(
+    executor: ExecutionContext, 
+    scheduler: Scheduler, 
+    maxFailures: Int, 
+    callTimeout: FiniteDuration, 
+    resetTimeout: FiniteDuration) = { this(scheduler, maxFailures, callTimeout, resetTimeout)(executor) }
 
   @volatile
   private[this] var _currentStateDoNotCallMeDirectly: State = Closed
@@ -399,5 +402,4 @@ class ModCircuitBreaker(
  * @param message Defaults to "Circuit Breaker is open; calls are failing fast"
  */
 class ModCircuitBreakerOpenException(
-  message: String = "Circuit Breaker is open; calls are failing fast")
-extends AkkaException(message) with NoStackTrace
+  message: String = "Circuit Breaker is open; calls are failing fast") extends AkkaException(message) with NoStackTrace
