@@ -19,7 +19,7 @@ class ModCircuitBreaker(
   callTimeout:              FiniteDuration,
   resetTimeout:             FiniteDuration)(implicit executor: ExecutionContext) {
 
-  private[this] var _currentState: AtomicReference[State] = new AtomicReference(Closed)
+  private var _currentState: AtomicReference[State] = new AtomicReference(Closed)
 
   /**
    * Wraps invocations of asynchronous calls that need to be protected
@@ -78,7 +78,7 @@ class ModCircuitBreaker(
    * @param newState Next state on transition
    * @return Whether the previous state matched correctly
    */
-  private[this] def swapState(oldState: State, newState: State): Boolean =
+  private def swapState(oldState: State, newState: State): Boolean =
     _currentState.compareAndSet(oldState, newState)
 
   /**
