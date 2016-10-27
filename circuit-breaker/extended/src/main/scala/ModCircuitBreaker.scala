@@ -292,13 +292,6 @@ class ModCircuitBreaker(
       set(0)
       swapResetTimeout(currentResetTimeout, resetTimeout)
     }
-
-    /**
-     * Override for more descriptive toString
-     *
-     * @return
-     */
-    override def toString: String = "Closed with failure count = " + get()
   }
 
   /**
@@ -336,13 +329,6 @@ class ModCircuitBreaker(
      * @return
      */
     override def _enter(): Unit = set(true)
-
-    /**
-     * Override for more descriptive toString
-     *
-     * @return
-     */
-    override def toString: String = "Half-Open currently testing call for success = " + get()
   }
 
   /**
@@ -385,13 +371,6 @@ class ModCircuitBreaker(
         attemptReset()
       }
     }
-
-    /**
-     * Override for more descriptive toString
-     *
-     * @return
-     */
-    override def toString: String = "Open"
   }
 
 }
