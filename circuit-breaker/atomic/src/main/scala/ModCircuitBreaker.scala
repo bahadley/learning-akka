@@ -19,13 +19,6 @@ class ModCircuitBreaker(
   callTimeout:              FiniteDuration,
   resetTimeout:             FiniteDuration)(implicit executor: ExecutionContext) {
 
-  def this(
-    executor: ExecutionContext, 
-    scheduler: Scheduler, 
-    maxFailures: Int, 
-    callTimeout: FiniteDuration, 
-    resetTimeout: FiniteDuration) = { this(scheduler, maxFailures, callTimeout, resetTimeout)(executor) }
-
   private[this] var _currentState: AtomicReference[State] = new AtomicReference(Closed)
 
   /**
