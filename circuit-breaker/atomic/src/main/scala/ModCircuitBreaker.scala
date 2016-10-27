@@ -112,12 +112,13 @@ class ModCircuitBreaker(
    */
   private def attemptReset(): Unit = transition(Open, HalfOpen)
 
-  private val timeoutFuture = Future.failed(new TimeoutException("Circuit Breaker Timed out.") with NoStackTrace)
 
   /**
    * Internal state abstraction
    */
   private sealed trait State {
+    private val timeoutFuture = Future.failed(new TimeoutException("Circuit Breaker Timed out.") with NoStackTrace)
+
     private val listeners = new CopyOnWriteArrayList[Runnable]
 
     /**
