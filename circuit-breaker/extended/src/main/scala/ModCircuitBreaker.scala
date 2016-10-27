@@ -30,40 +30,6 @@ class ModCircuitBreaker(
   private[this] var _currentResetTimeoutDoNotCallMeDirectly: FiniteDuration = resetTimeout
 
   /**
-   * Helper method for access to underlying state via Unsafe
-   *
-   * @param oldState Previous state on transition
-   * @param newState Next state on transition
-   * @return Whether the previous state matched correctly
-   */
-  @inline
-  private[this] def swapState(oldState: State, newState: State): Boolean =
-    Unsafe.instance.compareAndSwapObject(this, ModAbstractCircuitBreaker.stateOffset, oldState, newState)
-
-  /**
-   * Helper method for accessing underlying state via Unsafe
-   *
-   * @return Reference to current state
-   */
-  @inline
-  private[this] def currentState: State =
-    Unsafe.instance.getObjectVolatile(this, ModAbstractCircuitBreaker.stateOffset).asInstanceOf[State]
-
-  /**
-   * Helper method for updating the underlying resetTimeout via Unsafe
-   */
-  @inline
-  private[this] def swapResetTimeout(oldResetTimeout: FiniteDuration, newResetTimeout: FiniteDuration): Boolean =
-    Unsafe.instance.compareAndSwapObject(this, ModAbstractCircuitBreaker.resetTimeoutOffset, oldResetTimeout, newResetTimeout)
-
-  /**
-   * Helper method for accessing to the underlying resetTimeout via Unsafe
-   */
-  @inline
-  private[this] def currentResetTimeout: FiniteDuration =
-    Unsafe.instance.getObjectVolatile(this, ModAbstractCircuitBreaker.resetTimeoutOffset).asInstanceOf[FiniteDuration]
-
-  /**
    * Wraps invocations of asynchronous calls that need to be protected
    *
    * @param body Call needing protected
@@ -112,6 +78,40 @@ class ModCircuitBreaker(
    * @return ModCircuitBreaker for fluent usage
    */
   def onClose(callback: ⇒ Unit): ModCircuitBreaker = onClose(new Runnable { def run = callback })
+
+  /**
+   * Helper method for access to underlying state via Unsafe
+   *
+   * @param oldState Previous state on transition
+   * @param newState Next state on transition
+   * @return Whether the previous state matched correctly
+   */
+  @inline
+  private[this] def swapState(oldState: State, newState: State): Boolean =
+    Unsafe.instance.compareAndSwapObject(this, ModAbstractCircuitBreaker.stateOffset, oldState, newState)
+
+  /**
+   * Helper method for accessing underlying state via Unsafe
+   *
+   * @return Reference to current state
+   */
+  @inline
+  private[this] def currentState: State =
+    Unsafe.instance.getObjectVolatile(this, ModAbstractCircuitBreaker.stateOffset).asInstanceOf[State]
+
+  /**
+   * Helper method for updating the underlying resetTimeout via Unsafe
+   */
+  @inline
+  private[this] def swapResetTimeout(oldResetTimeout: FiniteDuration, newResetTimeout: FiniteDuration): Boolean =
+    Unsafe.instance.compareAndSwapObject(this, ModAbstractCircuitBreaker.resetTimeoutOffset, oldResetTimeout, newResetTimeout)
+
+  /**
+   * Helper method for accessing to the underlying resetTimeout via Unsafe
+   */
+  @inline
+  private[this] def currentResetTimeout: FiniteDuration =
+    Unsafe.instance.getObjectVolatile(this, ModAbstractCircuitBreaker.resetTimeoutOffset).asInstanceOf[FiniteDuration]
 
    /**
    * Implements consistent transition between states. Throws IllegalStateException if an invalid transition is attempted.
